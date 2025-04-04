@@ -1,0 +1,47 @@
+# 🛠 LOGS
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 📦 node_modules y dist
+lubrisula-web/node_modules/
+lubrisula-web/dist/
+
+lubrisula-app/node_modules/
+lubrisula-app/android/.gradle/
+lubrisula-app/android/app/build/
+lubrisula-app/ios/Pods/
+lubrisula-app/ios/build/
+lubrisula-app/.expo/
+lubrisula-app/*.apk
+lubrisula-app/*.keystore
+
+# 🔐 Archivos sensibles
+.env
+.env.local
+.env.*.local
+
+# 🧠 Configs de IDEs y editores
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 💻 SO / temporales
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.tmp
+*.bak
+*.old
+*.swp
