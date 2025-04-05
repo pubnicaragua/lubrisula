@@ -1,103 +1,89 @@
-"use client"
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { supabase } from '../../supabase';
+import { useNavigate } from 'react-router-dom';
 
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
+export default function LoginPage() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
+  const onSubmit = async (data) => {
+    setError("");
 
-  const { login } = useAuth()
-  const navigate = useNavigate()
+    const { email, password } = data;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    try {
-      const { success, error } = await login(email, password)
-
-      if (!success) {
-        throw new Error(error || "Error al iniciar sesión")
-      }
-
-      // Redirigir al dashboard
-      navigate("/dashboard")
-    } catch (error) {
-      setError(error.message)
-    } finally {
-      setLoading(false)
+    if (loginError) {
+      setError("Credenciales inválidas. Intenta de nuevo.");
+    } else {
+      navigate("/admin/dashboard");
     }
-  }
+  };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-center text-gray-800 mb-6">Inicio de Sesión</h2>
+    <>
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
+        Bienvenido de nuevo
+      </h2>
+      <p className="text-center text-sm text-gray-500 mb-6">
+        Ingresa tus credenciales para continuar
+      </p>
 
-      {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Correo electrónico
           </label>
           <input
-            id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email", { required: "Correo requerido" })}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="ejemplo@correo.com"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
           />
+          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
         </div>
 
-        <div className="mb-2">
-          <div className="flex justify-between items-center mb-1">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Contraseña
-            </label>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Contraseña
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              {...register("password", { required: "Contraseña requerida" })}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2.5 text-gray-500 text-sm"
+            >
+              {showPassword ? "Ocultar" : "Mostrar"}
+            </button>
           </div>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        <div className="flex justify-end mb-6">
-          <Link to="/auth/recuperar-password" className="text-sm text-blue-600 hover:text-blue-800">
-            ¿Olvidó su contraseña?
-          </Link>
+          {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
         </div>
 
         <button
           type="submit"
-          disabled={loading}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-xl font-semibold transition duration-200"
         >
-          {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+          Iniciar Sesión
         </button>
+
+        {error && <p className="text-red-600 text-sm text-center mt-2">{error}</p>}
       </form>
 
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
-          ¿No tiene una cuenta?{" "}
-          <Link to="/auth/register" className="text-blue-600 hover:text-blue-800">
-            Registrarse
-          </Link>
-        </p>
-      </div>
-    </div>
-  )
+      <p className="text-sm text-center text-gray-400 mt-4">
+        © 2025 AutoFlowX
+      </p>
+    </>
+  );
 }
-
-export default Login
-

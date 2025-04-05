@@ -6,14 +6,21 @@ export default {
   ],
   theme: {
     extend: {
-      // fontFamily: {
-      //   sans: ['Roboto', 'sans-serif'], // Fuente predeterminada personalizada
-      //   serif: ['Merriweather', 'serif'], // Otra fuente
-      //   mono: ['Fira Code', 'monospace'] // Fuente monoespaciada
-      // },
+      colors: {
+        autoflowx: {
+          dark: '#1F2A44',
+          light: '#3C4B67',
+          gray: '#AAB2BD',
+          accent: '#4DA1FF',
+          glass: 'rgba(255, 255, 255, 0.2)',
+        }
+      },
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+        mono: ['Fira Code', 'monospace'],
+      },
     },
   },
   plugins: [],
 }
-
-// Este archivo es la configuración de Tailwind CSS para el proyecto.

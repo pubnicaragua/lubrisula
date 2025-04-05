@@ -1,23 +1,18 @@
 import { Outlet } from "react-router-dom"
 
-function AuthLayout() {
+export default function AuthLayout() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-sky-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <div className="flex flex-col items-center mb-6">
-          <img src="/logo.png" alt="" />
-          <h1 className="text-xl font-bold text-gray-800 uppercase">AUTOFLOWX</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 flex items-center justify-center px-4">
+      <div className="w-full max-w-4xl flex bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-900 to-blue-700 text-white flex-col items-center justify-center p-10">
+          <img src="/autoflowx.png" alt="Logo AutoFlowX" className="h-48 mb-6" />
+          <h2 className="text-3xl font-bold">AutoFlowX</h2>
+          <p className="text-center mt-2">Optimiza tu flota, simplifica tu taller</p>
         </div>
-
-        <Outlet />
+        <div className="w-full md:w-1/2 p-8">
+          <Outlet />
+        </div>
       </div>
-
-      <footer className="mt-8 text-center text-sm text-gray-600">
-        &copy; {new Date().getFullYear()} AutoFlowX. Todos los derechos reservados.
-      </footer>
     </div>
   )
 }
-
-export default AuthLayout
-
